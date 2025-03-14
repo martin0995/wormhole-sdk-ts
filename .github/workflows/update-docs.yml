@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install the latest published SDK version
         run: npm install @wormhole-foundation/sdk@$LATEST_VERSION --save-exact
@@ -59,6 +59,10 @@ jobs:
           git status
 
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
+
+          eacho "Check status after commits"
+          git status 
+
           git push origin update-docs-${{ env.LATEST_VERSION }}
 
       - name: Create a pull request
