@@ -40,8 +40,12 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          BRANCH_NAME=update-docs-${{ github.event.release.tag_name }}
+          BRANCH_NAME=update-docs-${{ env.LATEST_VERSION }}
           git checkout -b $BRANCH_NAME
+
+          echo "🔍 Checking Git Status Before Adding Files:"
+          git status
+          
           git add docs/
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
           git push origin $BRANCH_NAME
@@ -50,7 +54,7 @@ jobs:
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-docs-${{ github.event.release.tag_name }}
+          branch: update-docs-${{ env.LATEST_VERSION }}
           title: "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}"
           body: "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**."
           base: main
