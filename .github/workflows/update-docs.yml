@@ -3,6 +3,7 @@ name: Update Documentation
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   update-docs:
@@ -19,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
 
       - name: Install the latest published SDK version
         run: npm install @wormhole-foundation/sdk@$LATEST_VERSION --save-exact
@@ -38,10 +39,19 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          git checkout main
-          git pull origin main --rebase
-      
+
+          BRANCH_NAME=update-docs-${{ github.event.release.tag_name }}
+          git checkout -b $BRANCH_NAME
           git add docs/ package.json
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
-          git push origin main
+          git push origin $BRANCH_NAME
+
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: update-docs-${{ github.event.release.tag_name }}
+          title: "Automated Documentation Update for SDK version $LATEST_VERSION"
+          body: "This PR updates the documentation to match the latest SDK release: **$LATEST_VERSION**."
+          base: main
+          labels: automated, documentation
