@@ -1,6 +1,6 @@
 {
   "name": "ts-sdk",
-  "version": "1.0.3",
+  "version": "1.13.2",
   "license": "Apache-2.0",
   "directories": {
     "test": "__tests__"
@@ -68,5 +68,8 @@
   ],
   "unreleased": [
     "tokenRegistry"
-  ]
+  ],
+  "dependencies": {
+    "@wormhole-foundation/sdk": "1.0.3"
+  }
 }
