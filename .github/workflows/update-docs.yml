@@ -1,7 +1,8 @@
-name: Test Update Documentation
+name: Update Documentation
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published] # Runs only when a new release is published
 
 jobs:
   update-docs:
@@ -23,6 +24,10 @@ jobs:
       - name: Install the latest published SDK version
         run: npm install @wormhole-foundation/sdk@$LATEST_VERSION --save-exact
 
+      - name: Update package.json version to match NPM release
+        run: |
+          jq --arg ver "$LATEST_VERSION" '.version=$ver' package.json > package.tmp.json && mv package.tmp.json package.json
+
       - name: Install other dependencies
         run: npm ci
 
@@ -33,6 +38,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
+          git add docs/ package.json
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
           git push origin main
