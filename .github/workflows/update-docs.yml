@@ -45,8 +45,14 @@ jobs:
 
           echo "🔍 Checking Git Status Before Adding Files:"
           git status
-          
-          git add docs/
+
+          git restore package.json package-lock.json
+
+          echo "🔍 Checking Git Status After Reset:"
+          git status
+
+          git add -A
+
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
           git push origin $BRANCH_NAME
 
