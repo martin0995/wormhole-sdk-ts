@@ -40,7 +40,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git checkout -b update-docs-${{ env.LATEST_VERSION }}
+          git checkout -b update-docs-test
 
           git add .
           git add docs/
@@ -60,14 +60,14 @@ jobs:
           echo "Check status after commits"
           git status 
 
-          git push origin update-docs-${{ env.LATEST_VERSION }}
+          git push --force origin update-docs-test
 
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-docs-${{ env.LATEST_VERSION }}
-          title: "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}"
-          body: "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**."
+          branch: update-docs-test
+          title: "Automated Documentation Update for SDK version test"
+          body: "This PR updates the documentation to match the latest SDK release: **test**."
           base: main
           labels: automated, documentation
