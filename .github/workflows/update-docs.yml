@@ -60,7 +60,7 @@ jobs:
 
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
 
-          eacho "Check status after commits"
+          echo "Check status after commits"
           git status 
 
           git push origin update-docs-${{ env.LATEST_VERSION }}
