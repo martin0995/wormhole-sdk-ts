@@ -40,12 +40,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-          git checkout -b update-docs-test
-
-          git add .
-          git add docs/
-          git add docs/*
-          git add -A
+          git checkout -b update-docs-${{ env.LATEST_VERSION }}
 
           echo "🔍 Checking Git Status Before Adding Files:"
           git status
@@ -55,19 +50,27 @@ jobs:
           echo "🔍 Checking Git Status After Reset:"
           git status
 
-          git commit -m "Automated documentation update for SDK version $LATEST_VERSION"
+          git add .
+          git add docs/
+          git add docs/*
+          git add -A
+
+          echo "🔍 Checking Git Status After Adding Docs:"
+          git status
+
+          git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
 
           echo "Check status after commits"
           git status 
 
-          git push --force origin update-docs-test
+          git push --force origin update-docs-${{ env.LATEST_VERSION }}
 
-      - name: Create a pull request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-docs-test
-          title: "Automated Documentation Update for SDK version test"
-          body: "This PR updates the documentation to match the latest SDK release: **test**."
-          base: main
-          labels: automated, documentation
+    #   - name: Create a pull request
+    #     uses: peter-evans/create-pull-request@v6
+    #     with:
+    #       token: ${{ secrets.GITHUB_TOKEN }}
+    #       branch: update-docs-${{ env.LATEST_VERSION }}
+    #       title: "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}"
+    #       body: "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**."
+    #       base: main
+    #       labels: automated, documentation
