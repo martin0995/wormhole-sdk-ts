@@ -55,7 +55,7 @@ jobs:
           echo "🔍 Checking Git Status After Reset:"
           git status
 
-          git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
+          git commit -m "Automated documentation update for SDK version $LATEST_VERSION"
 
           echo "Check status after commits"
           git status 
