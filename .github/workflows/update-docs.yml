@@ -20,7 +20,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install the latest published SDK version
         run: npm install @wormhole-foundation/sdk@$LATEST_VERSION --save-exact
@@ -55,20 +55,12 @@ jobs:
 
           git push origin update-docs-${{ env.LATEST_VERSION }}
 
-      - name: Fetch latest branch state
+      - name: Create a pull request using GitHub CLI
         run: |
-          git fetch origin update-docs-${{ env.LATEST_VERSION }}
-          git checkout update-docs-${{ env.LATEST_VERSION }}
-          git reset --hard origin/update-docs-${{ env.LATEST_VERSION }}
-          git log -n 5 --oneline
-
-      - name: Create a pull request
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: update-docs-${{ env.LATEST_VERSION }}
-          title: "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}"
-          body: "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**."
-          base: main
-          labels: automated, documentation
-          commit-message: "Preserve branch state for documentation update"
+          gh pr create --title "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}" \
+                       --body "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**." \
+                       --base main \
+                       --head update-docs-${{ env.LATEST_VERSION }} \
+                       --label "automated,documentation"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
