@@ -42,7 +42,7 @@ jobs:
 
           BRANCH_NAME=update-docs-${{ github.event.release.tag_name }}
           git checkout -b $BRANCH_NAME
-          git add docs/ package.json
+          git add docs/
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
           git push origin $BRANCH_NAME
 
@@ -51,7 +51,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           branch: update-docs-${{ github.event.release.tag_name }}
-          title: "Automated Documentation Update for SDK version $LATEST_VERSION"
-          body: "This PR updates the documentation to match the latest SDK release: **$LATEST_VERSION**."
+          title: "Automated Documentation Update for SDK version ${{ env.LATEST_VERSION }}"
+          body: "This PR updates the documentation to match the latest SDK release: **${{ env.LATEST_VERSION }}**."
           base: main
           labels: automated, documentation
