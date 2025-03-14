@@ -51,7 +51,12 @@ jobs:
           echo "🔍 Checking Git Status After Reset:"
           git status
 
+          git add docs/
+          git add docs/*
           git add -A
+
+          echo "🔍 Checking Git Status After Adding Docs:"
+          git status
 
           git commit -m "Automated documentation update for SDK version $LATEST_VERSION" || exit 0
           git push origin $BRANCH_NAME
