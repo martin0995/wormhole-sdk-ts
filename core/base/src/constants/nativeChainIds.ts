@@ -55,6 +55,7 @@ const chainNetworkNativeChainIdEntries = [
       ["Ink",       57073n],
       ["Sonic",     146n],
       ["HyperEVM",  999n],
+      ["Mezo",      31612n],
     ],
   ],
   [
@@ -111,6 +112,7 @@ const chainNetworkNativeChainIdEntries = [
       ["Monad",           10143n],
       ["Mezo",            31611n],
       ["Sonic",           57054n],
+      ["Converge",        52085145n],
     ],
   ],
   [
